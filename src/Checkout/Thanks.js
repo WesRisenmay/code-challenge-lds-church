@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useContext } from "react";
 import ProgressBar from "./ProgressBar";
 import styled from "styled-components";
-import shoppingContext from '../Common/shoppingContext';
+import shoppingContext from "../Common/shoppingContext";
 
 const StyledP = styled.p`
   text-align: center;
