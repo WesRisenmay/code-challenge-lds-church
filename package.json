@@ -4,6 +4,8 @@
   "description": "Code challenge",
   "main": "index.js",
   "scripts": {
+    "build": "webpack --mode production",
+    "build:development": "webpack --mode development",
     "lint": "standard",
     "lint-fix": "standard --fix",
     "start": "webpack-dev-server --open --mode development",
