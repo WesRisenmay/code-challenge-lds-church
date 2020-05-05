@@ -2,6 +2,8 @@ import React, { Fragment } from "react";
 import styled from "styled-components";
 import Button from "../Common/Button";
 import { useHistory } from "react-router";
+import { Formik } from "formik";
+import Input from "../Common/Input";
 
 const Summary = styled.div``;
 
@@ -29,6 +31,13 @@ const Table = styled.table`
   }
 `;
 
+const Form = styled.form`
+  width: 100%;
+  display: grid;
+  grid-gap: inherit;
+  justify-items: center;
+`;
+
 const items = [
   {
     name: "item1",
@@ -43,6 +52,14 @@ const items = [
 export default () => {
   const history = useHistory();
 
+  const initialValues = items.reduce(
+    (accumulator, { name }) => ({
+      ...accumulator,
+      [name]: "0",
+    }),
+    {}
+  );
+
   return (
     <Fragment>
       <Summary>
@@ -50,23 +67,70 @@ export default () => {
           <progress value={1} max={4} />
 
           <h2>Summary</h2>
-          <Table>
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Quanity</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map(({ name, amount }) => (
-                <tr key={name}>
-                  <td>{name}</td>
-                  <td>{amount}</td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-          <Button onClick={() => history.push("/shipping")}>Next</Button>
+          <Formik
+            initialValues={initialValues}
+            validate={(values) => {
+              const hasAnyValues = Object.values(values).find(
+                (value) => value > 0
+              );
+
+              if (!hasAnyValues) {
+                return Object.keys(values).reduce(
+                  (accumulator, current) => ({
+                    ...accumulator,
+                    [current]: ["Cannot checkout without any items"],
+                  }),
+                  {}
+                );
+              }
+            }}
+            onSubmit={(values) => {
+              history.push("/shipping");
+            }}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+            }) => (
+              <Form onSubmit={handleSubmit}>
+                <Table>
+                  <thead>
+                    <tr>
+                      <th>Item</th>
+                      <th>Quanity</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {items.map(({ name }, index) => (
+                      <tr key={name}>
+                        <td>{name}</td>
+                        <td>
+                          <Input
+                            key={name}
+                            autoFocus={index === 0}
+                            errors={touched[name] && errors[name]}
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            name={name}
+                            label={name}
+                            type="number"
+                            step="1"
+                            min="0"
+                            value={values[name]}
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+                <Button type="submit">Next</Button>
+              </Form>
+            )}
+          </Formik>
         </BodyContainer>
       </Summary>
     </Fragment>

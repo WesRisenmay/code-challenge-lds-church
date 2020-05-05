@@ -62,7 +62,7 @@ export default () => {
         }) => (
           <Form onSubmit={handleSubmit}>
             <Input
-              autofocus
+              autoFocus
               errors={touched.name && errors.name}
               onBlur={handleBlur}
               onChange={handleChange}
