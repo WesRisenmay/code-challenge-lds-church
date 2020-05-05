@@ -1,5 +1,33 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { MemoryRouter, Route, Switch } from "react-router-dom";
+import styled from "styled-components";
+import Summary from "./Summary";
+import Shipping from "./Shipping";
+
+const Checkout = styled.div`
+  h1 {
+    text-align: center;
+  }
+`;
 
 export default () => {
-  return <div>Checkout!</div>;
+  return (
+    <Checkout>
+      <Link to="/">{"< Home"}</Link>
+
+      <h1>Checkout</h1>
+
+      <MemoryRouter>
+        <Switch>
+          <Route path="/shipping">
+            <Shipping />
+          </Route>
+          <Route path="/">
+            <Summary />
+          </Route>
+        </Switch>
+      </MemoryRouter>
+    </Checkout>
+  );
 };

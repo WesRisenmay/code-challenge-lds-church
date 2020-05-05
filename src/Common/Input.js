@@ -15,13 +15,19 @@ const Error = styled.div`
   color: red;
 `;
 
+const Label = styled.label`
+  display: grid;
+  grid-gap: 4px;
+  margin: 8px;
+`;
+
 export default ({ errors = [], label, ...rest }) => {
   return (
     <Container>
-      <label>
+      <Label>
         {label}
         <input {...rest} />
-      </label>
+      </Label>
       {errors && errors.length ? (
         <Errors>
           {errors.map((error) => (

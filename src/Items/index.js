@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Formik } from "formik";
 import Input from "../Common/Input";
 import Button from "../Common/Button";
+import { useHistory } from "react-router";
 
 const items = [
   {
@@ -48,7 +49,9 @@ const StyledButton = styled(Button)`
   justify-self: center;
 `;
 
-const Items = styled.div``;
+const Items = styled.div`
+  text-align: center;
+`;
 
 export default () => {
   const initialValues = items.reduce(
@@ -59,8 +62,12 @@ export default () => {
     {}
   );
 
+  const history = useHistory();
+
   return (
     <Items>
+      <h1>Welcome</h1>
+      <p>Please choose some free items to order:</p>
       <Formik
         initialValues={initialValues}
         validate={(values) => {
@@ -77,7 +84,7 @@ export default () => {
           }
         }}
         onSubmit={(values) => {
-          console.log("submitting with", values);
+          history.push("/checkout");
         }}
       >
         {({
@@ -90,10 +97,11 @@ export default () => {
         }) => (
           <Form onSubmit={handleSubmit}>
             <ItemsContainer>
-              {items.map(({ name, image }) => (
+              {items.map(({ name, image }, index) => (
                 <Item key={name}>
                   <img src={image} />
                   <Input
+                    autoFocus={index === 0}
                     errors={touched[name] && errors[name]}
                     onBlur={handleBlur}
                     onChange={handleChange}
