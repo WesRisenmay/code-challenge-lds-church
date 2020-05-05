@@ -1,4 +1,5 @@
 # code-challenge-lds-church
+
 Code challenge for The Church of Jesus Christ of Latter Day Saints
 
 ### Getting Started

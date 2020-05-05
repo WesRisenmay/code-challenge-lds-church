@@ -1,13 +1,33 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import styled from 'styled-components'
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
+import Routes from "./Routes";
+import styled from "styled-components";
+import ShoppingContext from "./Common/shoppingContext";
 
-const StyledDiv = styled.div`
-  background-color: pink;
-`
+const Container = styled.div`
+  margin: 50px;
+  max-width: 100vw;
+  overflow: hidden;
+`;
 
 const App = () => {
-  return <StyledDiv>40 minute timer!</StyledDiv>
-}
+  const [address, setAddress] = useState({});
+  const [items, setItems] = useState([]);
 
-ReactDOM.render(<App />, document.getElementById('root'))
+  return (
+    <Container>
+      <ShoppingContext.Provider
+        value={{
+          address,
+          setAddress,
+          items,
+          setItems,
+        }}
+      >
+        <Routes />
+      </ShoppingContext.Provider>
+    </Container>
+  );
+};
+
+ReactDOM.render(<App />, document.getElementById("root"));
