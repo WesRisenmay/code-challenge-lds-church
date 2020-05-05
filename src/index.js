@@ -7,7 +7,7 @@ const StyledDiv = styled.div`
 `
 
 const App = () => {
-  return <StyledDiv>This is it</StyledDiv>
+  return <StyledDiv>40 minute timer!</StyledDiv>
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
