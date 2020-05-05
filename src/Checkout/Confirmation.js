@@ -1,8 +1,9 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useContext } from "react";
 import styled from "styled-components";
 import Button from "../Common/Button";
 import { useHistory } from "react-router";
 import ProgressBar from "./ProgressBar";
+import shoppingContext from "../Common/shoppingContext";
 
 const Confirmation = styled.div``;
 
@@ -37,25 +38,12 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const items = [
-  {
-    name: "item1",
-    amount: 2,
-  },
-  {
-    name: "item2",
-    amount: 1,
-  },
-];
-
-const name = "Jane Doe";
-const street = "123 Main St.";
-const city = "Somewhere Neat";
-const state = "UT";
-const zip = "88888";
-
 export default () => {
   const history = useHistory();
+  const {
+    address: { name, street, city, state, zip },
+    items,
+  } = useContext(shoppingContext);
 
   return (
     <Fragment>

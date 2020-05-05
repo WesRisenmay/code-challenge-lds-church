@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { Formik } from "formik";
 import Input from "../Common/Input";
 import Button from "../Common/Button";
 import { useHistory } from "react-router";
+import shoppingContext, {
+  convertFormikObjectToArray,
+} from "../Common/shoppingContext";
 
-const items = [
+const availableItems = [
   {
     name: "The Book of Mormon: Another Testament of Jesus Christ",
     image:
@@ -54,13 +57,28 @@ const Items = styled.div`
 `;
 
 export default () => {
-  const initialValues = items.reduce(
-    (accumulator, { name }) => ({
+  const { items, setItems } = useContext(shoppingContext);
+
+  const setValues = items.reduce(
+    (accumulator, { name, amount }) => ({
+      ...accumulator,
+      [name]: amount,
+    }),
+    {}
+  );
+
+  const emptyValues = availableItems.reduce(
+    (accumulator, { name, amount }) => ({
       ...accumulator,
       [name]: "0",
     }),
     {}
   );
+
+  const initialValues = {
+    ...emptyValues,
+    ...setValues,
+  };
 
   const history = useHistory();
 
@@ -84,6 +102,7 @@ export default () => {
           }
         }}
         onSubmit={(values) => {
+          setItems(convertFormikObjectToArray(values));
           history.push("/checkout");
         }}
       >
@@ -97,7 +116,7 @@ export default () => {
         }) => (
           <Form onSubmit={handleSubmit}>
             <ItemsContainer>
-              {items.map(({ name, image }, index) => (
+              {availableItems.map(({ name, image }, index) => (
                 <Item key={name}>
                   <img src={image} />
                   <Input

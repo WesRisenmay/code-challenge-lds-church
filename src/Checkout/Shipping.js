@@ -1,10 +1,11 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useContext } from "react";
 import { Formik } from "formik";
 import Button from "../Common/Button";
 import Input from "../Common/Input";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 import ProgressBar from "./ProgressBar";
+import shoppingContext from "../Common/shoppingContext";
 
 const Form = styled.form`
   display: grid;
@@ -22,6 +23,10 @@ const ButtonContainer = styled.div`
 
 export default () => {
   const history = useHistory();
+  const {
+    address: { name, street, city, state, zip },
+    setAddress,
+  } = useContext(shoppingContext);
 
   return (
     <Fragment>
@@ -30,11 +35,11 @@ export default () => {
 
       <Formik
         initialValues={{
-          name: "",
-          street: "",
-          city: "",
-          state: "",
-          zip: "",
+          name: name || "",
+          street: street || "",
+          city: city || "",
+          state: state || "",
+          zip: zip || "",
         }}
         validate={(values) => {
           return Object.entries(values).reduce((accumulator, [key, value]) => {
@@ -49,6 +54,7 @@ export default () => {
           }, {});
         }}
         onSubmit={(values) => {
+          setAddress(values);
           history.push("/confirmation");
         }}
       >

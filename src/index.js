@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import Routes from "./Routes";
 import styled from "styled-components";
+import ShoppingContext from "./Common/shoppingContext";
 
 const Container = styled.div`
   margin: 50px;
@@ -10,9 +11,21 @@ const Container = styled.div`
 `;
 
 const App = () => {
+  const [address, setAddress] = useState({});
+  const [items, setItems] = useState([]);
+
   return (
     <Container>
-      <Routes />
+      <ShoppingContext.Provider
+        value={{
+          address,
+          setAddress,
+          items,
+          setItems,
+        }}
+      >
+        <Routes />
+      </ShoppingContext.Provider>
     </Container>
   );
 };

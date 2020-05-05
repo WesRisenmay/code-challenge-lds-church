@@ -1,9 +1,12 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useContext } from "react";
 import styled from "styled-components";
 import Button from "../Common/Button";
 import { useHistory } from "react-router";
 import { Formik } from "formik";
 import Input from "../Common/Input";
+import shoppingContext, {
+  convertFormikObjectToArray,
+} from "../Common/shoppingContext";
 
 const Summary = styled.div``;
 
@@ -38,24 +41,14 @@ const Form = styled.form`
   justify-items: center;
 `;
 
-const items = [
-  {
-    name: "item1",
-    amount: 2,
-  },
-  {
-    name: "item2",
-    amount: 1,
-  },
-];
-
 export default () => {
   const history = useHistory();
+  const { items, setItems } = useContext(shoppingContext);
 
   const initialValues = items.reduce(
-    (accumulator, { name }) => ({
+    (accumulator, { name, amount }) => ({
       ...accumulator,
-      [name]: "0",
+      [name]: amount,
     }),
     {}
   );
@@ -85,6 +78,7 @@ export default () => {
               }
             }}
             onSubmit={(values) => {
+              setItems(convertFormikObjectToArray(values));
               history.push("/shipping");
             }}
           >
